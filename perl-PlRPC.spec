@@ -1,6 +1,6 @@
 Name:       perl-PlRPC 
 Version:    0.2020 
-Release:    12%{?dist}
+Release:    14%{?dist}
 License:    GPL+ or Artistic
 Group:      Development/Libraries
 Summary:    Interface for writing PlRPC clients and servers
@@ -8,6 +8,9 @@ Url:        http://search.cpan.org/dist/PlRPC
 Source:     http://search.cpan.org/CPAN/authors/id/M/MN/MNOONING/PlRPC/PlRPC-%{version}.tar.gz 
 # See <https://rt.cpan.org/Public/Bug/Display.html?id=74430>
 Patch0:     %{name}-0.2020-Do-not-use-syslog.patch
+# Document the Storable and encryption is not secure, bug #1030572,
+# CPAN RT#90474
+Patch1:     %{name}-0.2020-Security-notice-on-Storable-and-reply-attack.patch
 BuildArch:  noarch
 BuildRequires:  perl(ExtUtils::MakeMaker)
 # perldoc utility is called from Makefile
@@ -38,6 +41,7 @@ defining a set of methods that may be executed by the client.
 %prep
 %setup -q -n PlRPC
 %patch0 -p1
+%patch1 -p1
 
 %build
 %{__perl} Makefile.PL INSTALLDIRS=vendor
@@ -57,6 +61,12 @@ make test
 %{_mandir}/man3/*.3*
 
 %changelog
+* Fri Dec 27 2013 Daniel Mach <dmach@redhat.com> - 0.2020-14
+- Mass rebuild 2013-12-27
+
+* Tue Nov 26 2013 Petr Pisar <ppisar@redhat.com> - 0.2020-13
+- Document the Storable and encryption is not secure (bug #1030572)
+
 * Wed Oct 24 2012 Petr Pisar <ppisar@redhat.com> - 0.2020-12
 - Modernize spec file
 
